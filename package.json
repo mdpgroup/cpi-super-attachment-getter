@@ -1,5 +1,5 @@
 {
-  "name": "super-attachment-getter",
+  "name": "@mdpgroup/cpi-super-attachment-getter",
   "version": "0.1.0",
   "private": true,
   "scripts": {

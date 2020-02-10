@@ -6,7 +6,7 @@ export default class Data {
     @observable password = '';
     @observable URL = '';
     @observable login=false;
-    @observable Port="http://localhost:3000";
+    @observable Port="/api";
     @observable integrationContents = [];
 }
 

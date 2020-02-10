@@ -14,7 +14,17 @@ app.use(function(req, res, next) {
 const axios = require('axios');
 const util = require('util')
 
-app.get( '/MessageProcessingLogs' ,  function(req , res ){
+
+if( process.env.NODE_ENV === 'production' ){
+    //Static Folder
+    app.use( express.static(__dirname + '/public/') );
+
+    //Handle SPA 
+    app.get( /.*/ , (req,res) => res.sendFile(__dirname , '/public/index.html') );
+}
+
+
+app.get( '/api/MessageProcessingLogs' ,  function(req , res ){
     var login = req.headers.login;
     var server_URL = 'MessageProcessingLogs?%24orderby=LogEnd%20desc';
 
@@ -59,7 +69,7 @@ app.get( '/MessageProcessingLogs' ,  function(req , res ){
 
 });
 
-app.get( '/GetMessageProcessingLogs' ,  function(req , res ){
+app.get( '/api/GetMessageProcessingLogs' ,  function(req , res ){
     var login = req.headers.login;
    
     if(login){
@@ -104,7 +114,7 @@ app.get( '/GetMessageProcessingLogs' ,  function(req , res ){
 
 });
 
-app.get( '/CustomHeaders/:messageid' ,  function(req , res ){
+app.get( '/api/CustomHeaders/:messageid' ,  function(req , res ){
     var login = req.headers.login;
     var server_URL = 'MessageProcessingLogs(\''+req.params["messageid"]+'\')/CustomHeaderProperties';
 
@@ -151,7 +161,7 @@ app.get( '/CustomHeaders/:messageid' ,  function(req , res ){
 });
 
 
-app.get( '/MessageAttachment/:messageid' ,  function(req , res ){
+app.get( '/api/MessageAttachment/:messageid' ,  function(req , res ){
     var login = req.headers.login;
     var server_URL = 'MessageProcessingLogs(\''+req.params["messageid"]+'\')/Attachments';
 
@@ -197,7 +207,7 @@ app.get( '/MessageAttachment/:messageid' ,  function(req , res ){
 
 });
 
-app.get( '/MessageRuns/:messageid' ,  function(req , res ){
+app.get( '/api/MessageRuns/:messageid' ,  function(req , res ){
     var login = req.headers.login;
     var server_URL = 'MessageProcessingLogs(\''+ req.params["messageid"]+ '\')/Runs';
 
@@ -243,7 +253,7 @@ app.get( '/MessageRuns/:messageid' ,  function(req , res ){
 
 });
 
-app.get( '/RunSteps/:messageid' ,  function(req , res ){
+app.get( '/api/RunSteps/:messageid' ,  function(req , res ){
     var login = req.headers.login;
     var server_URL = 'MessageProcessingLogRuns(\''+req.params["messageid"]+'\')/RunSteps';
 
@@ -290,7 +300,7 @@ app.get( '/RunSteps/:messageid' ,  function(req , res ){
 });
 
 
-app.get( '/MessageErrorLog/:messageid' ,  function(req , res ){
+app.get( '/api/MessageErrorLog/:messageid' ,  function(req , res ){
     var login = req.headers.login;
     var server_URL = 'MessageProcessingLogs(\''+req.params["messageid"]+'\')/ErrorInformation';
 
@@ -337,7 +347,7 @@ app.get( '/MessageErrorLog/:messageid' ,  function(req , res ){
 });
 
 
-app.get( '/GetAttachment/:messageid' ,  function(req , res ){
+app.get( '/api/GetAttachment/:messageid' ,  function(req , res ){
     var login = req.headers.login;
     var server_URL = 'MessageProcessingLogAttachments(\''+req.params["messageid"]+'\')/$value';
 
@@ -383,7 +393,7 @@ app.get( '/GetAttachment/:messageid' ,  function(req , res ){
 });
 
 
-app.get( '/ErrorLogValue/:messageid' ,  function(req , res ){
+app.get( '/api/ErrorLogValue/:messageid' ,  function(req , res ){
     var login = req.headers.login;
     var server_URL = 'MessageProcessingLogErrorInformations(\''+req.params["messageid"]+'\')/$value';
 
@@ -428,7 +438,7 @@ app.get( '/ErrorLogValue/:messageid' ,  function(req , res ){
 
 });
 
-app.get( '/' ,  function(req , res ){
+app.get( '/api' ,  function(req , res ){
     res.send('Test 1 2 3....');
 });
 
