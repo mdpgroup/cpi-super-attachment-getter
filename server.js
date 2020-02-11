@@ -2,11 +2,12 @@
 
 const express = require('express')
 const app = express()
-const port = 3000
+let port = 3001 
 var parseString = require('xml2js').parseString;
 var excors = require('cors')
 var str2ab = require('string-to-arraybuffer')
 const path = require('path');
+const opn = require('opn');
 
 app.use(excors())
 app.use(function(req, res, next) {
@@ -17,14 +18,14 @@ app.use(function(req, res, next) {
 const axios = require('axios');
 const util = require('util')
 
-if( process.env.NODE_ENV === 'production' ){
-    //Static Folder
-    app.use( express.static(__dirname + '/dist/') );
+app.use(express.static(path.join(__dirname, 'public'))) 
 
-    //Handle SPA 
-    app.get( /.*/ , (req,res) => res.sendFile(__dirname , '/dist/index.html') );
-}
 
+app.get( '/' ,  function(req , res ){
+    res.send('Test 1 2 3....');
+    res.redirect("index.html")
+    //res.sendFile( './index.html' );
+});
 
 app.get( '/api/MessageProcessingLogs' ,  function(req , res ){
     var login = req.headers.login;
@@ -442,19 +443,11 @@ app.get( '/api/ErrorLogValue/:messageid' ,  function(req , res ){
 
 app.locals.data = null;
 
-app.get( '/api' ,  function(req , res ){
-    res.send('Test 1 2 3....');
-
-    if(app.locals.data==null){
-        res.redirect("./../dist/index.html")
-    }
-
-});
-
-
 app.listen
 (
     port, () => {
             console.log(`Listening on port ${port}!`)
     }
 )
+
+opn('http://localhost:'+port);
